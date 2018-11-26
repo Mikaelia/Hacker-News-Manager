@@ -10,7 +10,7 @@ export const PARAM_PAGE = "page=";
 export const PARAM_HPP = "hitsPerPage=";
 
 //// SORT OBJECT CONSTANT ////
-const SORTS = {
+export const SORTS = {
   NONE: list => list,
   TITLE: list => sortBy(list, "title"),
   AUTHOR: list => sortBy(list, "author"),

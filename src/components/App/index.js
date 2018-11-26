@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
-import PropTypes from "prop-types";
-import { sortBy } from "lodash";
 import Table from "../Table";
 import Search from "../Search";
-import ButtonWithLoading from "../Button";
+import { ButtonWithLoading } from "../Button";
 
 import "../../scss/main.scss";
 
@@ -15,29 +13,10 @@ import {
   PATH_SEARCH,
   PARAM_SEARCH,
   PARAM_PAGE,
-  PARAM_HPP
+  PARAM_HPP,
+  SORTS
 } from "../../constants";
 
-const SORTS = {
-  NONE: list => list,
-  TITLE: list => sortBy(list, "title"),
-  AUTHOR: list => sortBy(list, "author"),
-  COMMENTS: list => sortBy(list, "num_comments").reverse(),
-  POINTS: list => sortBy(list, "points").reverse()
-};
-
-const updateSearchTopStoriesState = (hits, page) => prevState => {
-  const { searchKey, results } = prevState;
-  const oldHits = results && results[searchKey] ? results[searchKey].hits : [];
-  const updatedHits = [...oldHits, ...hits];
-
-  return {
-    results: { ...results, [searchKey]: { hits: updatedHits, page } },
-    isLoading: false
-  };
-};
-
-//// APP COMPONENT ////
 class App extends Component {
   _isMounted = false;
 
@@ -49,6 +28,18 @@ class App extends Component {
     isLoading: false,
     sortKey: "NONE",
     isSortReverse: false
+  };
+
+  updateSearchTopStoriesState = (hits, page) => prevState => {
+    const { searchKey, results } = prevState;
+    const oldHits =
+      results && results[searchKey] ? results[searchKey].hits : [];
+    const updatedHits = [...oldHits, ...hits];
+
+    return {
+      results: { ...results, [searchKey]: { hits: updatedHits, page } },
+      isLoading: false
+    };
   };
 
   componentDidMount() {
@@ -69,7 +60,7 @@ class App extends Component {
 
   setSearchTopStories = result => {
     const { hits, page } = result;
-    this.setState(updateSearchTopStoriesState(hits, page));
+    this.setState(this.updateSearchTopStoriesState(hits, page));
   };
 
   onSearchSubmit = e => {
@@ -127,7 +118,6 @@ class App extends Component {
       sortKey
     } = this.state;
 
-    console.log(sortKey);
     const page =
       (results && results[searchKey] && results[searchKey].page) || 0;
     const list =
