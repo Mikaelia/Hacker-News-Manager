@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 
-import "../../scss/main.scss";
-
 import Table from "../Table";
 import Search from "../Search";
 import ButtonWithLoading from "../Button";
+
+import "../../scss/main.scss";
 
 import {
   DEFAULT_QUERY,
@@ -34,17 +34,17 @@ class App extends Component {
   _isMounted = false;
 
   state = {
-    results: null,
     searchKey: "",
     searchTerm: DEFAULT_QUERY,
+    results: null,
     error: null,
     isLoading: false
   };
 
   componentDidMount() {
     this._isMounted = true;
-
     const { searchTerm } = this.state;
+
     this.setState({ searchKey: searchTerm });
     this.fetchSearchTopStories(searchTerm);
   }

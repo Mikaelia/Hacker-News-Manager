@@ -52,17 +52,24 @@ class Table extends Component {
 
     this.setState({ sortKey, isSortReverse });
   };
+
   render() {
     const { sortKey, isSortReverse } = this.state;
     const { list, onDismiss } = this.props;
+    //sorting list
     const sortedList = SORTS[sortKey](list);
+    // Returns sorted list if isSortReverse false, else returns reversed list
     const reverseSortedList = isSortReverse ? sortedList.reverse() : sortedList;
 
     return (
       <div className="table">
         <div className="table-header">
           <span style={{ width: "40%" }}>
-            <Sort sortKey={"TITLE"} onSort={this.onSort} activeSorKey={sortKey}>
+            <Sort
+              sortKey={"TITLE"}
+              onSort={this.onSort}
+              activeSortKey={sortKey}
+            >
               Title
             </Sort>
           </span>
@@ -70,7 +77,7 @@ class Table extends Component {
             <Sort
               sortKey={"AUTHOR"}
               onSort={this.onSort}
-              activeSorKey={sortKey}
+              activeSortKey={sortKey}
             >
               Author
             </Sort>
@@ -79,7 +86,7 @@ class Table extends Component {
             <Sort
               sortKey={"COMMENTS"}
               onSort={this.onSort}
-              activeSorKey={sortKey}
+              activeSortKey={sortKey}
             >
               Comments
             </Sort>
@@ -88,7 +95,7 @@ class Table extends Component {
             <Sort
               sortKey={"POINTS"}
               onSort={this.onSort}
-              activeSorKey={sortKey}
+              activeSortKey={sortKey}
             >
               Points
             </Sort>
