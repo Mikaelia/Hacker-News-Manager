@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
-
+import { sortBy } from "lodash";
 import Table from "../Table";
 import Search from "../Search";
 import ButtonWithLoading from "../Button";
@@ -17,6 +17,14 @@ import {
   PARAM_PAGE,
   PARAM_HPP
 } from "../../constants";
+
+const SORTS = {
+  NONE: list => list,
+  TITLE: list => sortBy(list, "title"),
+  AUTHOR: list => sortBy(list, "author"),
+  COMMENTS: list => sortBy(list, "num_comments").reverse(),
+  POINTS: list => sortBy(list, "points").reverse()
+};
 
 const updateSearchTopStoriesState = (hits, page) => prevState => {
   const { searchKey, results } = prevState;
@@ -38,7 +46,9 @@ class App extends Component {
     searchTerm: DEFAULT_QUERY,
     results: null,
     error: null,
-    isLoading: false
+    isLoading: false,
+    sortKey: "NONE",
+    isSortReverse: false
   };
 
   componentDidMount() {
@@ -82,6 +92,14 @@ class App extends Component {
       .catch(error => this._isMoutned && this.setState({ error }));
   };
 
+  onSort = sortKey => {
+    // If isSortReversed is false for sortKey, make true
+    const isSortReverse =
+      this.state.sortKey === sortKey && !this.state.isSortReverse;
+
+    this.setState({ sortKey, isSortReverse });
+  };
+
   onDismiss = id => {
     const { searchKey, results } = this.state;
     const { hits, page } = results[searchKey];
@@ -99,11 +117,23 @@ class App extends Component {
   };
 
   render() {
-    const { searchTerm, results, searchKey, error, isLoading } = this.state;
+    const {
+      searchTerm,
+      results,
+      searchKey,
+      error,
+      isLoading,
+      isSortReverse,
+      sortKey
+    } = this.state;
+
+    console.log(sortKey);
     const page =
       (results && results[searchKey] && results[searchKey].page) || 0;
     const list =
       (results && results[searchKey] && results[searchKey].hits) || [];
+    const sortedList = SORTS[sortKey](list);
+    const reverseSortedList = isSortReverse ? sortedList.reverse() : sortedList;
 
     return (
       <div className="page">
@@ -121,7 +151,12 @@ class App extends Component {
             <p>Something went wrong</p>
           </div>
         ) : (
-          <Table list={list} onDismiss={this.onDismiss} />
+          <Table
+            list={reverseSortedList}
+            onDismiss={this.onDismiss}
+            onSort={this.onSort}
+            activeSortKey={sortKey}
+          />
         )}
         <div className="interactions">
           <ButtonWithLoading
