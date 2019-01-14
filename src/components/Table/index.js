@@ -12,6 +12,9 @@ const largeColumn = {
 const midColumn = {
   width: "30%"
 };
+const midSmallColumn = {
+  width: "15%"
+};
 const smallColumn = {
   width: "10%"
 };
@@ -21,7 +24,7 @@ const smallColumn = {
 const Table = ({ list, onDismiss, onSort, activeSortKey }) => (
   <div className="table">
     <div className="table-header">
-      <span style={{ width: "40%" }}>
+      <span style={largeColumn}>
         <Sort
           sortKey={"TITLE"}
           onSort={() => onSort("TITLE")}
@@ -30,7 +33,7 @@ const Table = ({ list, onDismiss, onSort, activeSortKey }) => (
           Title
         </Sort>
       </span>
-      <span style={{ width: "30%" }}>
+      <span style={midColumn}>
         <Sort
           sortKey={"AUTHOR"}
           onSort={() => onSort("AUTHOR")}
@@ -39,7 +42,7 @@ const Table = ({ list, onDismiss, onSort, activeSortKey }) => (
           Author
         </Sort>
       </span>
-      <span style={{ width: "10%" }}>
+      <span style={midSmallColumn}>
         <Sort
           sortKey={"COMMENTS"}
           onSort={() => onSort("COMMENTS")}
@@ -48,7 +51,7 @@ const Table = ({ list, onDismiss, onSort, activeSortKey }) => (
           Comments
         </Sort>
       </span>
-      <span style={{ width: "10%" }}>
+      <span style={smallColumn}>
         <Sort
           sortKey={"POINTS"}
           onSort={() => onSort("POINTS")}
@@ -57,7 +60,7 @@ const Table = ({ list, onDismiss, onSort, activeSortKey }) => (
           Points
         </Sort>
       </span>
-      <span style={{ width: "10%" }}>Archive</span>
+      <span style={smallColumn}>Archive</span>
     </div>
 
     {list.map(item => (
@@ -66,7 +69,7 @@ const Table = ({ list, onDismiss, onSort, activeSortKey }) => (
           <a href={item.url}>{item.title}</a>
         </span>
         <span style={midColumn}>{item.author}</span>
-        <span style={smallColumn}>{item.num_comments}</span>
+        <span style={midSmallColumn}>{item.num_comments}</span>
         <span style={smallColumn}>{item.points}</span>
         <span style={smallColumn}>
           <Button

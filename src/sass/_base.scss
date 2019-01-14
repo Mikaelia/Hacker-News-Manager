@@ -3,10 +3,12 @@
 *::before {
   margin: 0;
   padding: 0;
-  box-sizing: inherit; }
+  box-sizing: inherit;
+}
 
 html {
-  font-size: 62.5%; }
+  font-size: 62.5%;
+}
 
 body {
   box-sizing: border-box;
@@ -16,25 +18,32 @@ body {
   font-size: 1.2rem;
   color: #222;
   background: #f4f4f4;
+
   display: flex;
-  justify-content: center; }
+  justify-content: center;
+}
 
 a {
   color: #222;
-  text-decoration: none; }
-  a:hover {
-    text-decoration: underline; }
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
 
 ul,
 li {
-  list-style: none; }
+  list-style: none;
+}
 
 input {
   padding: 1rem;
   border-radius: .5rem;
   margin-right: 1rem;
   margin-bottom: 5rem;
-  border: 1px solid #dddddd; }
+  border: 1px solid #dddddd;
+}
 
 button {
   padding: 10px;
@@ -43,34 +52,44 @@ button {
   background: transparent;
   color: #808080;
   transition: all .2s;
-  cursor: pointer; }
-  button:hover {
+  cursor: pointer;
+
+  &:hover {
     background: #80808025;
-    color: #222; }
+    color: #222;
+  }
+}
 
 *:focus {
-  outline: none; }
+  outline: none;
+}
 
+
+//// APP STYLES ////
 .app-header {
   text-align: center;
   font-size: 4rem;
   margin-top: 8rem;
   font-weight: 200;
-  margin-bottom: 5rem; }
+  margin-bottom: 5rem;
+}
 
 .interactions {
-  text-align: center; }
+  text-align: center;
+}
 
 .table-header {
   font-size: 1.5rem;
   padding: 0 10px;
   display: flex;
-  justify-content: space-between; }
+  justify-content: space-between;
+}
 
 .table-empty {
   margin: 20rem;
   text-align: center;
-  font-size: 1.6rem; }
+  font-size: 1.6rem;
+}
 
 .table-row {
   display: flex;
@@ -79,16 +98,19 @@ button {
   margin: 1rem 0;
   padding: 1rem;
   background: #ffffff;
-  border: 1px solid #e3e3e3; }
+  border: 1px solid #e3e3e3;
+}
 
-.table-header > span {
+.table-header>span {
   overflow: hidden;
-  padding: 0 1rem; }
+  padding: 0 1rem;
+}
 
-.table-row > span {
+.table-row>span {
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 0 1rem; }
+  padding: 0 1rem;
+}
 
 .button-inline {
   position: relative;
@@ -99,22 +121,31 @@ button {
   -webkit-font-smoothing: inherit;
   padding: 0;
   font-size: inherit;
-  cursor: pointer; }
-  .button-inline::after {
+  cursor: pointer;
+
+  &::after {
     position: absolute;
     bottom: 0;
     left: 0;
+
     content: '';
     height: 1.5px;
     width: 0%;
     background-color: transparent;
-    transition: .5s; }
-  .button-inline:hover::after {
+    transition: .5s;
+  }
+
+  &:hover::after {
     width: 100%;
-    background-color: #38BB6C; }
-  .button-inline:hover {
-    background: transparent; }
+    background-color: #38BB6C;
+  }
+
+  &:hover {
+    background: transparent;
+  }
+}
 
 .button-active {
   border-radius: 0;
-  border-bottom: 1px solid #3bc9ce; }
+  border-bottom: 1px solid rgb(59, 201, 206);
+}

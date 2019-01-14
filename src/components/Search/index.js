@@ -13,7 +13,6 @@ class Search extends Component {
 
     return (
       <form onSubmit={onSubmit}>
-        {children}
         <input
           type="text"
           value={value}

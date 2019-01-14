@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import axios from "axios";
+
 import Table from "../Table";
 import Search from "../Search";
 import { ButtonWithLoading } from "../Button";
+import updateSearchTopStoriesState from "../updateTopStoriesState";
 
-import "../../scss/main.scss";
+import "../../css/style.css";
 
 import {
   DEFAULT_QUERY,
@@ -30,37 +32,41 @@ class App extends Component {
     isSortReverse: false
   };
 
-  updateSearchTopStoriesState = (hits, page) => prevState => {
-    const { searchKey, results } = prevState;
-    const oldHits =
-      results && results[searchKey] ? results[searchKey].hits : [];
-    const updatedHits = [...oldHits, ...hits];
-
-    return {
-      results: { ...results, [searchKey]: { hits: updatedHits, page } },
-      isLoading: false
-    };
-  };
-
   componentDidMount() {
-    this._isMounted = true;
     const { searchTerm } = this.state;
+    this._isMounted = true;
 
     this.setState({ searchKey: searchTerm });
     this.fetchSearchTopStories(searchTerm);
   }
 
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
+  fetchSearchTopStories = (searchTerm, page = 0) => {
+    this.setState({ isLoading: true });
 
-  needsToSearchTopStories = searchTerm => {
-    return !this.state.results[searchTerm];
+    axios(
+      `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`
+    )
+      .then(result => this._isMounted && this.setSearchTopStories(result.data))
+      .catch(error => this._isMoutned && this.setState({ error }));
   };
 
   setSearchTopStories = result => {
     const { hits, page } = result;
-    this.setState(this.updateSearchTopStoriesState(hits, page));
+    // Passing function to setState to prevent setState batching errors
+    // Next state depends on previous state
+    this.setState(updateSearchTopStoriesState(hits, page));
+  };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  onSearchChange = e => {
+    this.setState({ searchTerm: e.target.value });
+  };
+
+  needsToSearchTopStories = searchTerm => {
+    return !this.state.results[searchTerm];
   };
 
   onSearchSubmit = e => {
@@ -71,16 +77,6 @@ class App extends Component {
       this.fetchSearchTopStories(searchTerm);
     }
     e.preventDefault();
-  };
-
-  fetchSearchTopStories = (searchTerm, page = 0) => {
-    this.setState({ isLoading: true });
-
-    axios(
-      `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`
-    )
-      .then(result => this._isMounted && this.setSearchTopStories(result.data))
-      .catch(error => this._isMoutned && this.setState({ error }));
   };
 
   onSort = sortKey => {
@@ -103,10 +99,6 @@ class App extends Component {
     });
   };
 
-  onSearchChange = e => {
-    this.setState({ searchTerm: e.target.value });
-  };
-
   render() {
     const {
       searchTerm,
@@ -127,6 +119,7 @@ class App extends Component {
 
     return (
       <div className="page">
+        <h1 className="app-header">Hacker News Client</h1>
         <div className="interactions">
           <Search
             value={searchTerm}
